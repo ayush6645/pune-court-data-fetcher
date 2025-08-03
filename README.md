@@ -1,106 +1,156 @@
-# 🏛️ Court Data Fetcher
+# Pune District Court Case Search
 
-A user-friendly web interface for retrieving court case details from Pune District Court. This tool allows users to search for case information using various parameters such as court type, case number, year, and more. It also includes CAPTCHA verification and dynamic UI components for an improved user experience.
+A Flask-based web application for searching case statuses in the Pune District Court. This application allows users to search for court cases by selecting a court complex, court establishment, case type, case number, and year, and retrieves detailed case information, including links to associated court orders or judgments in PDF format.
 
----
+## Features
 
-## 📋 Table of Contents
+- **Case Search**: Users can search for cases by providing court complex, establishment, case type, case number, and year.
+- **Dynamic Case Types**: Fetches and displays available case types dynamically.
+- **CAPTCHA Integration**: Retrieves and displays CAPTCHA images for secure form submissions.
+- **Case Details**: Retrieves detailed case information, including links to PDF orders/judgments.
+- **Database Logging**: Logs all search queries and responses in a SQLite database for record-keeping.
+- **Responsive Design**: Built with Bootstrap for a user-friendly and responsive interface.
 
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Dependencies](#dependencies)
-- [Examples](#examples)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+## Prerequisites
 
----
+- Python 3.8+
+- SQLite (included with Python)
+- A modern web browser
 
-## ✨ Features
+## Installation
 
-- Select between **Court Complex** or **Court Establishment**
-- Dynamically load court and case types
-- CAPTCHA image loading and refresh
-- Responsive form with validation
-- Modal for displaying detailed case information
-- Stylish and modern UI with CSS enhancements
-- Fully client-side interactive form behavior
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/pune-court-case-search.git
+   cd pune-court-case-search
+   ```
 
----
+2. **Create a Virtual Environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-## 🛠️ Installation
+3. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Clone the repository:
+4. **Initialize the Database**:
+   ```bash
+   python init_db.py
+   ```
 
-    ```bash
-    git clone https://github.com/your-username/court-data-fetcher.git
-    cd court-data-fetcher
-    ```
+   This creates a SQLite database (`queries.db`) with a `queries` table to store search data.
 
-2. Place the `index.html` in your web server directory (e.g., `public_html/` or any backend-integrated server route).
+## Usage
 
-3. Ensure you have backend endpoints for:
-   - `/get_case_types`
-   - `/get_captcha`
-   - `/get_details`
-   - `/` (to receive POST form data)
+1. **Run the Application**:
+   ```bash
+   python app.py
+   ```
 
----
+   The application will start in debug mode and be accessible at `http://localhost:5000`.
 
-## 🚀 Usage
+2. **Access the Web Interface**:
+   - Open a web browser and navigate to `http://localhost:5000`.
+   - Select the court complex, court establishment, case type, enter the case number, year, and CAPTCHA code.
+   - Submit the form to view case details, including links to any available PDF orders or judgments.
 
-1. Open the `index.html` in a browser or deploy it on a server.
-2. Choose between **Court Complex** or **Court Establishment**.
-3. Select the appropriate options from the dropdown menus.
-4. Fill in the case number and year.
-5. Enter the CAPTCHA and click **Search**.
-6. Case results will appear below the form. Click on a case to view more details in a modal.
+3. **Check Database Contents**:
+   ```bash
+   python check_db.py
+   ```
 
----
+   This script displays all stored queries and their responses from the `queries.db` database.
 
-## ⚙️ Configuration
+4. **Example Inputs**:
+   Below are real examples from the Civil Court, Pimpri, listed on 02-08-2025. You can use these to test the form, or replace with your own case details (court complex, establishment, case type, case number, and year):
 
-- The CAPTCHA and dynamic dropdowns depend on backend APIs (`/get_captcha`, `/get_case_types`, etc.)
-- Ensure CORS is enabled if the frontend and backend are on different domains.
-- Tokens and hidden fields (`scid`, `tok_`) are handled dynamically via JavaScript.
+   | Serial Number | Case Type/Case Number/Case Year | Party Name                          | Advocate                |
+   |---------------|---------------------------------|-------------------------------------|-------------------------|
+   | 1             | Reg.Sum.Suit/80/2024            | Uco Bank Through Its Authorized Officer Shamik Acharee vs Narayan Jibeba Aru | Shah Ronak              |
+   | 2             | Reg.Dkst/13/2024                | Lata Vithal Sonawane Vs Kisan Maruti alias Malhari | Rawade Ramkrishna Balasaheb |
+   | 3             | Civil M.A./37/2024              | Rahul Ratnakar Kastu Vs No Anyone    | Gawade Shashikant Shobha|
+   | 4             | Reg.Sum.Suit/99/2024            | Shweta Sudam Ghodechor Vs Sudam Ramesh Ghodechor | Gundawade Vaishali Bhauso Vs null |
+   | 5             | R.C.S./24/2024                  | Dhananjay Balkrushna Pogam Alias Pungam Vs Maruti Baburao Taras | Joshi Pramod Vynkatesh  |
+   | 6             | R.C.S./19/2025                  | Ramchandra Khandagale Vs Shriram Finance Ltd | Parchure Pramod Vishwas |
+   | 7             | R.C.S./36/2025                  | Mr Santosh Keshavrao Mane Vs Yogesh Mangalsen Bahal | Sawant Manali Pandurang |
+   | 8             | Civil M.A./21/2025              | Usha Mahendra Damle Vs Ratna Nilin Marthe | ADV SANJAY ASHOK JADHAV |
 
----
+   - **How to Use**: Select "Pimpri, Civil Court" as the court complex and establishment, choose the appropriate case type (e.g., "Reg.Sum.Suit" for serial number 1), enter the case number (e.g., "80" for serial number 1), and year (e.g., "2024" for serial number 1). Add your own CAPTCHA code and submit.
+   - **Try Your Own**: Replace the above with your case number, year, and relevant court complex/establishment from the form options.
 
-## 📦 Dependencies
+## Project Structure
 
-- Pure HTML, CSS, and Vanilla JavaScript
-- Requires server-side endpoints for dynamic functionalities
+```
+pune-court-case-search/
+├── app.py                # Main Flask application
+├── check_db.py           # Script to check contents of the SQLite database
+├── init_db.py            # Script to initialize the SQLite database
+├── requirements.txt      # Python dependencies
+├── templates/
+│   └── index.html        # HTML template for the case search form
+└── queries.db            # SQLite database (created after running init_db.py)
+```
 
----
+## Dependencies
 
-## 🧪 Examples
+Listed in `requirements.txt`:
+- Flask: Web framework for the application
+- Playwright: For browser automation (if used)
+- BeautifulSoup4: For HTML parsing
+- python-dotenv: For environment variable management
+- Requests: For making HTTP requests to the court server
 
-- **Court Complex**: Select *Pune, Civil and Criminal Court*
-- **Case Number**: `1234`
-- **Year**: `2023`
-- CAPTCHA will be dynamically fetched and validated.
+## Database Schema
 
----
+The `queries` table in `queries.db` has the following schema:
 
-## 🛠️ Troubleshooting
+| Column         | Type     | Description                              |
+|----------------|----------|------------------------------------------|
+| `id`           | INTEGER  | Primary key, auto-incremented            |
+| `timestamp`    | DATETIME | Timestamp of the query (auto-generated)  |
+| `court_complex`| TEXT     | Court complex code                       |
+| `case_type`    | TEXT     | Case type code                           |
+| `case_number`  | TEXT     | Case number                              |
+| `case_year`    | TEXT     | Case year                                |
+| `raw_response` | TEXT     | Raw HTML/JSON response from the server   |
 
-| Problem                             | Solution                                                       |
-|-------------------------------------|----------------------------------------------------------------|
-| CAPTCHA not loading                 | Ensure backend `/get_captcha` endpoint is functioning.         |
-| Dropdowns not populating case types| Backend `/get_case_types` should return a valid JSON array.    |
-| Modal not showing case details     | Confirm `/get_details` returns proper HTML content.            |
+## Routes
 
----
+- **GET/POST `/`**: Renders the main case search form (GET) and handles form submissions (POST).
+- **GET `/get_case_types`**: Returns a JSON list of available case types.
+- **GET `/get_captcha`**: Fetches CAPTCHA image and associated form tokens.
+- **POST `/get_details`**: Retrieves detailed case information, including PDF links, based on a case identifier (CINO).
 
-## 👨‍💻 Contributing
+## Notes
 
-Contributions are welcome! Please open issues or submit pull requests for improvements, bug fixes, or additional features.
+- The application interacts with the Pune District Court's AJAX endpoints to fetch case data.
+- Ensure a stable internet connection, as the application relies on external server responses.
+- CAPTCHA validation is required for form submissions, as per the court's website requirements.
+- The application logs all queries to the SQLite database for auditing and debugging purposes.
+- PDF links for orders/judgments are extracted and appended to the case details response for easy access.
 
----
+## Troubleshooting
 
-## 📄 License
+- **Database Errors**: If `check_db.py` reports that the database or table does not exist, run `python init_db.py` to initialize it.
+- **CAPTCHA Issues**: If the CAPTCHA fails to load, refresh the page or check your internet connection.
+- **Server Errors**: If the court server returns errors, verify the form inputs or try again later, as the external server may be temporarily unavailable.
 
-This project is open source and available under the [MIT License](LICENSE).
+## Contributing
 
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Make your changes and commit (`git commit -m "Add your feature"`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This application is for educational and personal use only. It interacts with the Pune District Court's public website and does not store or process sensitive personal data beyond what is necessary for case searches. Ensure compliance with all applicable laws and regulations when using this tool.
