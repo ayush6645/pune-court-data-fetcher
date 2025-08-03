@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Court Data Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"],
+        input[type="reset"],
+        button {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="reset"] {
+            background-color: #6c757d;
+            margin-left: 10px;
+        }
+
+        input[type="reset"]:hover {
+            background-color: #5a6268;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin-top: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+        #siwp_captcha_image_0 {
+            margin-top: 10px;
+            display: block;
+            max-height: 70px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #search_result {
+            margin-top: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        /* Add this new CSS to your existing <style> block in index.html */
+
+        #modal-body h2 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        #modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        #modal-body th,
+        #modal-body td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #modal-body th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            width: 35%;
+            /* Gives more space for the value column */
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .orders-table th {
+            background-color: #f2f2f2;
+        }
+
+        .pdf-link {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Court Case Search – Pune District Court</h1>
+
+    <form action="/" method="post" id="ecourt-services-case-status-case-number" novalidate>
+        <p>All fields marked with * are required</p>
+        <fieldset>
+            <legend>Please select court type</legend>
+            <label><input value="courtComplex" type="radio" name="service_type" id="chkYes" checked /> Court
+                Complex</label>
+            <label><input value="courtEstablishment" type="radio" name="service_type" id="chkNo" /> Court
+                Establishment</label>
+        </fieldset>
+        <div id="courtComplex">
+            <label for="est_code">Court Complex *</label>
+            <div id="courtComplex">
+                <label for="est_code">Court Complex *</label>
+                <select name="est_code" id="est_code" required>
+                    <option value="">Select Court Complex</option>
+                    <option value="MHPU23,MHPU21,MHPU22">Khed, Civil Court</option>
+                    <option value="MHPU08">Khadki, Criminal Court</option>
+                    <option value="MHPU20">Shirur, Civil Court</option>
+                    <option value="MHPU07">Pune, JMFC, Railway Court</option>
+                    <option value="MHPU19">Daund, Railway Criminal Court</option>
+                    <option value="MHPU14,MHPU15,MHPU16">Baramati, Dist and Session Court</option>
+                    <option value="MHPU25,MHPU33,MHPU34">Junner, Additional District Court</option>
+                    <option value="MHPU13">Saswad, Civil Court</option>
+                    <option value="MHPU24">Ghodegaon, Civil Court</option>
+                    <option value="MHPU05">Pune, Civil and Criminal Court</option>
+                    <option value="MHPU26">Maval, Civil Court</option>
+                    <option value="MHPU12">Bhor, Civil Court</option>
+                    <option value="MHPU17,MHPU31,MHPU32">Indapur, Civil Court</option>
+                    <option value="MHPU18,MHPU30">Daund, Civil Court</option>
+                    <option value="MHPU10">Akurdi, Criminal Court</option>
+                    <option value="MHPU01,MHPU02,MHPU04,MHPU03,MHPU11">Pune, District and Sessions Court</option>
+                    <option value="MHPU09,MHPU27">Pimpri, Civil Court</option>
+                    <option value="MHPU06">Pune, JMFC, Cantonment Court</option>
+                    <option value="MHPU28">Vadgaon Civil Court Senior Division</option>
+                    <option value="MHPU29">Vadgaon Maval Add. District Court</option>
+                </select>
+            </div>
+        </div>
+        <div id="courtEstablishment" style="display:none;">
+            <label for="court_establishment">Court Establishment *</label>
+            <div id="courtEstablishment" style="display:none;">
+                <label for="court_establishment">Court Establishment *</label>
+                <select name="est_code" id="court_establishment" required>
+                    <option value="">--Select Court Establishment--</option>
+                    <option value="MHPU23">Civil Court, Khed</option>
+                    <option value="MHPU21">Additional District Court, Khed</option>
+                    <option value="MHPU22">Civil Court Senior Division, Khed</option>
+                    <option value="MHPU08">Cantonment Court, Khadki</option>
+                    <option value="MHPU20">Civil Court, Shirur</option>
+                    <option value="MHPU07">Railway Court, Pune</option>
+                    <option value="MHPU19">Railway Court, Daund</option>
+                    <option value="MHPU14">Additional District Court, Baramati</option>
+                    <option value="MHPU15">Civil Court Senior Division, Baramati</option>
+                    <option value="MHPU16">Criminal Courts, Baramati</option>
+                    <option value="MHPU25">Civil and Criminal Court, Junnar</option>
+                    <option value="MHPU33">Additional District Court Junnar</option>
+                    <option value="MHPU34">Civil Judge Senior Division, Junnar</option>
+                    <option value="MHPU13">Civil Court, Saswad</option>
+                    <option value="MHPU24">Civil Court, Ghodegaon</option>
+                    <option value="MHPU05">Civil Court, Pmc</option>
+                    <option value="MHPU26">Civil Court, Vadgaon Maval</option>
+                    <option value="MHPU12">Civil Court, Bhor</option>
+                    <option value="MHPU17">Civil Court, Indapur</option>
+                    <option value="MHPU31">Additional District and Sessions Court Indapur</option>
+                    <option value="MHPU32">Civil Judge Senior Division, Indapur</option>
+                    <option value="MHPU18">Civil Court, Daund</option>
+                    <option value="MHPU30">Civil Court Senior Division, Daund</option>
+                    <option value="MHPU10">Civil Court, Pcmc</option>
+                    <option value="MHPU01">District and Session Court, Pune</option>
+                    <option value="MHPU02">Civil Court Senior Division, Pune</option>
+                    <option value="MHPU04">Chief Judicial Magistrate, Pune</option>
+                    <option value="MHPU03">Small Cause Court, Pune</option>
+                    <option value="MHPU11">Juvenile Court, Pune</option>
+                    <option value="MHPU09">Civil Court, Pimpri</option>
+                    <option value="MHPU27">Civil Court, PmcCivil</option>
+                    <option value="MHPU06">Criminal Court, Cantonment, Pune</option>
+                    <option value="MHPU28">Civil Court Senior Division, Vadgaon</option>
+                    <option value="MHPU29">Additional District Court Vadgaon Maval</option>
+                </select>
+            </div>
+        </div>
+        <label for="case_type">Case Type *</label>
+        <select name="case_type" id="case_type" disabled required>
+            <option value="">--Select Case Type--</option>
+        </select>
+        <label for="reg_no">Case Number *</label>
+        <input type="text" name="reg_no" id="reg_no" placeholder="Type Case Number" required />
+        <label for="reg_year">Year *</label>
+        <input type="text" name="reg_year" id="reg_year" placeholder="Type year" required />
+        <label for="siwp_captcha_value">Please Enter the Captcha *</label>
+        <img src="" alt="CAPTCHA Image" id="siwp_captcha_image_0" />
+        <button type="button" onclick="loadCaptcha()">🔄 Refresh CAPTCHA</button>
+        <input type="hidden" name="scid" value="" id="scid_input" />
+        <input type="hidden" name="tok_" value="" id="token_input" /> <input type="text" name="siwp_captcha_value"
+            id="siwp_captcha_value_0" placeholder="Enter Captcha Code" required />
+        <input type="submit" name="submit" value="Search" />
+        <input type="reset" value="Reset" />
+        <input type="hidden" name="es_ajax_request" value="1" />
+    </form>
+
+    <div id="search_result"></div>
+
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const courtComplexRadio = document.getElementById("chkYes");
+            const courtEstablishmentRadio = document.getElementById("chkNo");
+            const courtComplexDiv = document.getElementById("courtComplex");
+            const courtEstablishmentDiv = document.getElementById("courtEstablishment");
+            const estCodeSelectComplex = document.getElementById("est_code");
+            const estCodeSelectEstablishment = document.getElementById("court_establishment");
+            const caseTypeSelect = document.getElementById("case_type");
+            const scidInput = document.getElementById("scid_input");
+            const tokenInput = document.getElementById("token_input");
+            const captchaImage = document.getElementById("siwp_captcha_image_0");
+            const form = document.getElementById("ecourt-services-case-status-case-number");
+            const resultDiv = document.getElementById("search_result");
+            const modal = document.getElementById("details-modal");
+            const modalBody = document.getElementById("modal-body");
+            const closeButton = document.querySelector(".close-button");
+
+            function toggleCourtSelection() {
+                const isComplex = courtComplexRadio.checked;
+                courtComplexDiv.style.display = isComplex ? "block" : "none";
+                courtEstablishmentDiv.style.display = isComplex ? "none" : "block";
+                estCodeSelectComplex.disabled = !isComplex;
+                estCodeSelectEstablishment.disabled = isComplex;
+                const currentCode = isComplex ? estCodeSelectComplex.value : estCodeSelectEstablishment.value;
+                fetchCaseTypes(currentCode);
+            }
+
+            async function fetchCaseTypes(est_code) {
+                caseTypeSelect.innerHTML = '<option value="">--Select Case Type--</option>';
+                caseTypeSelect.disabled = true;
+                if (!est_code) return;
+
+                try {
+                    const response = await fetch(
+                    `/get_case_types?est_code=${encodeURIComponent(est_code)}`);
+                    if (!response.ok) throw new Error('Failed to fetch case types');
+                    const data = await response.json();
+                    if (data.case_types && Array.isArray(data.case_types)) {
+                        data.case_types.forEach(type => {
+                            const option = document.createElement("option");
+                            option.value = type.code;
+                            option.textContent = type.name;
+                            caseTypeSelect.appendChild(option);
+                        });
+                        caseTypeSelect.disabled = false;
+                    }
+                } catch (error) {
+                    console.error("Error fetching case types:", error);
+                }
+            }
+
+            async function loadCaptcha() {
+                try {
+                    const response = await fetch("/get_captcha");
+                    if (!response.ok) throw new Error('Failed to load CAPTCHA');
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error);
+                    captchaImage.src = data.captcha_url || "";
+                    scidInput.value = data.scid || "";
+                    tokenInput.name = data.token_name || "tok_";
+                    tokenInput.value = data.token_value || "";
+                } catch (error) {
+                    console.error("Error loading CAPTCHA:", error);
+                    alert("Could not load CAPTCHA. Please refresh the page.");
+                }
+            }
+
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                resultDiv.innerHTML = "<p>Searching for cases, please wait...</p>";
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch("/", {
+                        method: "POST",
+                        body: formData
+                    });
+                    resultDiv.innerHTML = await response.text();
+                } catch (err) {
+                    resultDiv.innerHTML =
+                        `<div class="alert alert-danger">Error: ${err.message}</div>`;
+                }
+            });
+
+            // **FINAL CORRECTED CLICK HANDLER**
+            resultDiv.addEventListener('click', async function (e) {
+                // 1. Use the correct class selector: .viewCnrDetails
+                const viewLink = e.target.closest('.viewCnrDetails');
+                if (viewLink) {
+                    e.preventDefault();
+                    // 2. Get the correct data attribute: data-cno
+                    const cno = viewLink.getAttribute('data-cno');
+                    if (!cno) return;
+
+                    modalBody.innerHTML = '<p>Loading case details, please wait...</p>';
+                    modal.style.display = 'block';
+                    try {
+                        const formData = new FormData();
+                        // 3. The backend expects 'cino', so we name it cino here
+                        formData.append('cino', cno);
+                        const response = await fetch('/get_details', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        modalBody.innerHTML = await response.text();
+                    } catch (error) {
+                        modalBody.innerHTML =
+                            `<div class="alert alert-danger"><strong>An error occurred:</strong> ${error.message}</div>`;
+                    }
+                }
+            });
+
+            closeButton.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            courtComplexRadio.addEventListener("change", toggleCourtSelection);
+            courtEstablishmentRadio.addEventListener("change", toggleCourtSelection);
+            estCodeSelectComplex.addEventListener("change", () => {
+                if (courtComplexRadio.checked) fetchCaseTypes(estCodeSelectComplex.value);
+            });
+            estCodeSelectEstablishment.addEventListener("change", () => {
+                if (!courtComplexRadio.checked) fetchCaseTypes(estCodeSelectEstablishment.value);
+            });
+
+            toggleCourtSelection();
+            loadCaptcha();
+            window.loadCaptcha = loadCaptcha;
+        });
+    </script>
+</body>
+
+</html>
