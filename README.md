@@ -1,199 +1,106 @@
-# Pune Court Case Data Fetcher
+# 🏛️ Court Data Fetcher
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-<br />
-<div align="center">
-  <a href="https://github.com/YourGitHubUsername/pune_court_data_fetcher">
-    <!-- Add a logo here if you have one -->
-    <!-- <img src="path/to/logo.png" alt="Logo" width="80" height="80"> -->
-  </a>
-
-  <h3 align="center">Pune Court Case Data Fetcher</h3>
-
-  <p align="center">
-    A web application to easily search for and retrieve case data from the Pune District Court e-courts portal.
-    <br />
-    <a href="https://github.com/YourGitHubUsername/pune_court_data_fetcher"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <!-- <a href="#">View Demo</a>
-    · -->
-    <a href="https://github.com/YourGitHubUsername/pune_court_data_fetcher/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/YourGitHubUsername/pune_court_data_fetcher/issues">Request Feature</a>
-  </p>
-</div>
+A user-friendly web interface for retrieving court case details from Pune District Court. This tool allows users to search for case information using various parameters such as court type, case number, year, and more. It also includes CAPTCHA verification and dynamic UI components for an improved user experience.
 
 ---
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+## 📋 Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Dependencies](#dependencies)
+- [Examples](#examples)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## About The Project
+## ✨ Features
 
-This project provides a simple and efficient web interface to search for case information from the Pune District Court's public portal. It streamlines the process of accessing case data by offering a clean form that interacts with the e-courts backend services.
-
-Users can quickly find case summaries and dive into detailed views, including case history and orders, without needing to navigate the complexities of the official website directly.
-
-### Features
-
-*   **Flexible Search**: Search by either **Court Complex** or **Court Establishment**.
-*   **Dynamic Case Types**: The "Case Type" dropdown is automatically populated with the correct options based on your court selection.
-*   **Specific Queries**: Find cases using their unique **Case Number** and **Registration Year**.
-*   **CAPTCHA Handling**: Integrates with the e-courts CAPTCHA system, including a refresh button for new challenges.
-*   **Detailed Modal View**: Click on any case in the search results to view comprehensive details in a clean pop-up, including:
-    *   Case Status and Filing Information
-    *   Petitioner and Respondent details
-    *   Associated Acts and FIR information
-    *   Complete Case History and Orders
-    *   Direct links to downloadable order PDFs (when available).
-
-### Built With
-
-This project is built with a combination of a Python backend and a vanilla JavaScript frontend.
-
-*   **Backend**: Python (likely with a web framework like Flask or FastAPI)
-*   **Frontend**: HTML, CSS, JavaScript
+- Select between **Court Complex** or **Court Establishment**
+- Dynamically load court and case types
+- CAPTCHA image loading and refresh
+- Responsive form with validation
+- Modal for displaying detailed case information
+- Stylish and modern UI with CSS enhancements
+- Fully client-side interactive form behavior
 
 ---
 
-## Getting Started
+## 🛠️ Installation
 
-To get a local copy up and running, follow these simple steps.
+1. Clone the repository:
 
-### Prerequisites
-
-You will need Python 3 and `pip` installed on your system.
-
-*   Python 3
-    ```sh
-    # Check if python is installed
-    python --version
+    ```bash
+    git clone https://github.com/your-username/court-data-fetcher.git
+    cd court-data-fetcher
     ```
 
-### Installation
+2. Place the `index.html` in your web server directory (e.g., `public_html/` or any backend-integrated server route).
 
-1.  Clone the repo
-    ```sh
-    git clone https://github.com/YourGitHubUsername/pune_court_data_fetcher.git
-    ```
-2.  Navigate to the project directory
-    ```sh
-    cd pune_court_data_fetcher
-    ```
-3.  Create and activate a virtual environment (recommended)
-    ```sh
-    # For macOS/Linux
-    python3 -m venv venv
-    source venv/bin/activate
-
-    # For Windows
-    python -m venv venv
-    .\venv\Scripts\activate
-    ```
-4.  Install Python packages (assuming a `requirements.txt` file exists)
-    ```sh
-    pip install -r requirements.txt
-    ```
-5.  Run the application (assuming the main file is `app.py`)
-    ```sh
-    python app.py
-    ```
-6.  Open your browser and navigate to `http://127.0.0.1:5000` (or the port specified in your app).
+3. Ensure you have backend endpoints for:
+   - `/get_case_types`
+   - `/get_captcha`
+   - `/get_details`
+   - `/` (to receive POST form data)
 
 ---
 
-## Usage
+## 🚀 Usage
 
-1.  Open the web page in your browser.
-2.  Select whether you want to search by "Court Complex" or "Court Establishment".
-3.  Choose the specific court from the dropdown menu.
-4.  Select the appropriate "Case Type" that loads dynamically.
-5.  Enter the "Case Number" and "Year".
-6.  Enter the characters you see in the CAPTCHA image. Use the "Refresh CAPTCHA" button if it's unclear.
-7.  Click "Search".
-8.  The results will appear below the form. Click the "View" link on any case to see its full details in a pop-up window.
+1. Open the `index.html` in a browser or deploy it on a server.
+2. Choose between **Court Complex** or **Court Establishment**.
+3. Select the appropriate options from the dropdown menus.
+4. Fill in the case number and year.
+5. Enter the CAPTCHA and click **Search**.
+6. Case results will appear below the form. Click on a case to view more details in a modal.
 
 ---
 
-## Roadmap
+## ⚙️ Configuration
 
-See the open issues for a full list of proposed features (and known issues).
-
----
-
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-Please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+- The CAPTCHA and dynamic dropdowns depend on backend APIs (`/get_captcha`, `/get_case_types`, etc.)
+- Ensure CORS is enabled if the frontend and backend are on different domains.
+- Tokens and hidden fields (`scid`, `tok_`) are handled dynamically via JavaScript.
 
 ---
 
-## License
+## 📦 Dependencies
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
----
-
-## Contact
-
-Your Name - @YourTwitter - email@example.com
-
-Project Link: https://github.com/YourGitHubUsername/pune_court_data_fetcher
+- Pure HTML, CSS, and Vanilla JavaScript
+- Requires server-side endpoints for dynamic functionalities
 
 ---
 
-## Acknowledgments
+## 🧪 Examples
 
-*   Data is sourced from the official e-Courts Services portal.
-*   Shields.io for the badges.
+- **Court Complex**: Select *Pune, Civil and Criminal Court*
+- **Case Number**: `1234`
+- **Year**: `2023`
+- CAPTCHA will be dynamically fetched and validated.
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/YourGitHubUsername/pune_court_data_fetcher.svg?style=for-the-badge
-[contributors-url]: https://github.com/YourGitHubUsername/pune_court_data_fetcher/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/YourGitHubUsername/pune_court_data_fetcher.svg?style=for-the-badge
-[forks-url]: https://github.com/YourGitHubUsername/pune_court_data_fetcher/network/members
-[stars-shield]: https://img.shields.io/github/stars/YourGitHubUsername/pune_court_data_fetcher.svg?style=for-the-badge
-[stars-url]: https://github.com/YourGitHubUsername/pune_court_data_fetcher/stargazers
-[issues-shield]: https://img.shields.io/github/issues/YourGitHubUsername/pune_court_data_fetcher.svg?style=for-the-badge
-[issues-url]: https://github.com/YourGitHubUsername/pune_court_data_fetcher/issues
-[license-shield]: https://img.shields.io/github/license/YourGitHubUsername/pune_court_data_fetcher.svg?style=for-the-badge
-[license-url]: https://github.com/YourGitHubUsername/pune_court_data_fetcher/blob/main/LICENSE.txt
+---
+
+## 🛠️ Troubleshooting
+
+| Problem                             | Solution                                                       |
+|-------------------------------------|----------------------------------------------------------------|
+| CAPTCHA not loading                 | Ensure backend `/get_captcha` endpoint is functioning.         |
+| Dropdowns not populating case types| Backend `/get_case_types` should return a valid JSON array.    |
+| Modal not showing case details     | Confirm `/get_details` returns proper HTML content.            |
+
+---
+
+## 👨‍💻 Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for improvements, bug fixes, or additional features.
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
